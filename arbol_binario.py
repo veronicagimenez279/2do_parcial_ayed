@@ -222,8 +222,52 @@ class Arbol (object):
                 pendientes.arribo(nodo.der)               
 
 
+    def mostrar_dinosaurio (self, codigo):
+        """Muestra toda la informacion del dinosaurio con el codigo dado."""
+        pos = self.busqueda(codigo)
+        if (pos):
+            print (' - Nombre:', pos.datos['nombre'])
+            print (' - Codigo:', pos.datos['codigo'])
+            print (' - Zona:', pos.datos['zona'])
+
+    def mostrar_por_nombre (self, nombre):
+        """Muestra a todos los dinosaurios de un nombre dado."""
+        if (self.info is not None):
+            if (self.izq is not None):
+                self.izq.mostrar_por_nombre(nombre)
+            if (self.datos['nombre'] == nombre):
+                print (self.info, '- Codigo:', self.datos['codigo'], '- Zona:', self.datos['zona'])
+            if (self.der is not None):
+                self.der.mostrar_por_nombre(nombre)
 
 
+    def cambiar_nombre (self, nombre_viejo, nombre_nuevo):
+        """Cambia el nombre original por el nombre_nuevo dado."""
+        pos = self.busqueda(nombre_viejo)
+        if (pos):
+            nombre, datos = self.eliminar_nodo(nombre_viejo)
+            datos['nombre'] = nombre_nuevo
+            self = self.insertar_nodo(nombre_nuevo, datos)
 
 
+    def mostrar_ubicacion_dinosaurio (self, dinosaurio):
+        """Muestra la ubicacion de todos los dinosaurios con el nombre dado."""  
+        if (self.info is not None):
+            if (self.izq is not None):
+                self.izq.mostrar_ubicacion_dinosaurio(dinosaurio)
+            if (self.datos['nombre'] == dinosaurio):
+                print ('Zona', self.datos['zona'])
+            if (self.der is not None):
+                self.der.mostrar_ubicacion_dinosaurio(dinosaurio)
 
+    def contador_dinosaurios (self, dinosaurio):
+        """Cuenta cuantos dinosaurios hay del tipo dado."""
+        cantidad = 0
+        if (self.info is not None):
+            if (self.info == dinosaurio):
+                cantidad += 1
+            if (self.izq is not None):
+                cantidad += self.izq.contador_dinosaurios(dinosaurio)
+            if (self.der is not None):
+                cantidad += self.der.contador_dinosaurios(dinosaurio)
+        return cantidad
